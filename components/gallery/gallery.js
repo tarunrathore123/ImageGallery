@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ImageGallery from "react-image-gallery";
 import Carousel from "./carousel";
+import ImageGrid from "./imageGrid";
 
 const data = [
   {
@@ -99,35 +100,16 @@ const Gallery = ({ category, isImageOpen, setIsImageOpen }) => {
       setFileteredData(data.filter((item) => item.category == category));
     }
   }, [category]);
-  console.log({filteredData})
   return (
     <Grid container spacing={1} style={{ width: "100%" }}>
-      {!isImageOpen ? (
-        filteredData.map((image, index) => {
-          return (
-            <Grid
-              item
-              xs={3}
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                setCurrentImageIndex(index);
-                setIsImageOpen(true);
-              }}
-              key={image.name}
-            >
-              <Image
-                src={image.original}
-                width={300}
-                height={200}
-                layout="responsive"
-                alt="Picture of the author"
-                style={{ objectFit: "contain", width: "100%" }}
-              />
-            </Grid>
-          );
-        })
-      ) : (
+      {isImageOpen ? (
         <Carousel items={filteredData} index={currentImageIndex} />
+      ) : (
+        <ImageGrid
+          filteredData={filteredData}
+          setCurrentImageIndex={setCurrentImageIndex}
+          setIsImageOpen={setIsImageOpen}
+        />
       )}
     </Grid>
   );
